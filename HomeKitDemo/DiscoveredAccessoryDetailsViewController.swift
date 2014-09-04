@@ -13,25 +13,25 @@ class DiscoveredAccessoryDetailsViewController : UIViewController {
 
     let homeManager = HMHomeManager()
     
-    strong var accessory :HMAccessory?
+    var accessory :HMAccessory?
 
-    @IBOutlet var labelName :UILabel
-    @IBOutlet var reachable :UILabel
-    @IBOutlet var roomName :UILabel
+    @IBOutlet var labelName :UILabel?
+    @IBOutlet var reachable :UILabel?
+    @IBOutlet var roomName :UILabel?
     
     override func viewWillAppear(animated: Bool) {
-        labelName.text = accessory?.name
+        labelName?.text = accessory?.name
 
         if let room = accessory?.room {
-            roomName.text = accessory?.room.name
+            roomName?.text = accessory?.room.name
         } else {
-            roomName.text = "room not set"
+            roomName?.text = "room not set"
         }
         
-        if accessory?.reachable {
-            reachable.text = "Accessory reachable !"
+        if accessory?.reachable == true {
+            reachable?.text = "Accessory reachable !"
         } else {
-            reachable.text = "This accessory is out of range, turned off, etc"
+            reachable?.text = "This accessory is out of range, turned off, etc"
         }
 
     }
@@ -45,9 +45,9 @@ class DiscoveredAccessoryDetailsViewController : UIViewController {
         NSLog("accessory : \(accessory)")
         NSLog("home : \(home)")
         
-        if (home) {
+        if (home != nil) {
             home.addAccessory(accessory, completionHandler: ({(error:NSError!) in
-                if error {
+                if (error != nil) {
                     var popup = UIAlertView(title:"Error", message:"Error when adding accessory to primary home (error is : \(error)", delegate: nil, cancelButtonTitle:"Ok :(")
                     popup.show()
                     

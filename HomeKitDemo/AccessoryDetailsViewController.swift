@@ -11,13 +11,13 @@ import HomeKit
 
 class AccessoryDetailsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, HMAccessoryDelegate {
     
-    @IBOutlet var accessoryName :UILabel
+    @IBOutlet var accessoryName :UILabel?
     
-    @IBOutlet var roomName :UILabel
+    @IBOutlet var roomName :UILabel?
     
-    @IBOutlet var reachable :UILabel
+    @IBOutlet var reachable :UILabel?
     
-    @IBOutlet var tableView :UITableView
+    @IBOutlet var tableView :UITableView?
     
     var accessory :HMAccessory?
     var home :HMHome?
@@ -63,9 +63,9 @@ class AccessoryDetailsViewController : UIViewController, UITableViewDelegate, UI
     func render() {
         NSLog("render !")
         
-        accessoryName.text = accessory?.name
-        roomName.text = accessory?.room.name
-        reachable.text = accessory?.reachable == true ? "Reachable !" : "Accessory not reachable"
+        accessoryName?.text = accessory?.name
+        roomName?.text = accessory?.room.name
+        reachable?.text = accessory?.reachable == true ? "Reachable !" : "Accessory not reachable"
     }
     
     
@@ -115,7 +115,7 @@ extension AccessoryDetailsViewController {
     }
     
     func accessoryDidUpdateServices(accessory: HMAccessory!) {
-        tableView.reloadData()
+        tableView?.reloadData()
     }
     
     

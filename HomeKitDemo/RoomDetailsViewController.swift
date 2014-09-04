@@ -11,7 +11,7 @@ import HomeKit
 
 class RoomDetailsViewController : UITableViewController, UITableViewDelegate, UITableViewDataSource {
     
-    @IBOutlet var mainHomeName :UILabel
+    @IBOutlet var mainHomeName :UILabel?
     
     var room :HMRoom?
     var home :HMHome?

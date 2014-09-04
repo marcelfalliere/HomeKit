@@ -13,12 +13,12 @@ class PrimaryHomeViewController: UIViewController {
     
     let homeManager = HMHomeManager()
     
-    @IBOutlet var mainHomeName :UILabel
-    @IBOutlet var numberOfRooms :UILabel
-    @IBOutlet var numberOfAccessories :UILabel
+    @IBOutlet var mainHomeName :UILabel?
+    @IBOutlet var numberOfRooms :UILabel?
+    @IBOutlet var numberOfAccessories :UILabel?
     
-    @IBOutlet var listOfRoomsButton :UIButton
-    @IBOutlet var listOfAccessoriesButton :UIButton
+    @IBOutlet var listOfRoomsButton :UIButton?
+    @IBOutlet var listOfAccessoriesButton :UIButton?
     
     override func viewWillAppear(animated: Bool) {
        updateUi()
@@ -27,15 +27,15 @@ class PrimaryHomeViewController: UIViewController {
     func updateUi() {
         NSLog("primary home : \(homeManager.primaryHome) count:\(homeManager.homes.count)")
         if (homeManager.primaryHome) {
-            mainHomeName.text = homeManager.primaryHome.name
+            mainHomeName?.text = homeManager.primaryHome.name
             
-            numberOfRooms.text = "\(homeManager.primaryHome.rooms.count) rooms"
-            listOfRoomsButton.enabled = homeManager.primaryHome.rooms.count > 0
+            numberOfRooms?.text = "\(homeManager.primaryHome.rooms.count) rooms"
+            listOfRoomsButton?.enabled = homeManager.primaryHome.rooms.count > 0
             
-            numberOfAccessories.text = "\(homeManager.primaryHome.accessories.count) accessories"
-            listOfAccessoriesButton.enabled = homeManager.primaryHome.accessories.count > 0
+            numberOfAccessories?.text = "\(homeManager.primaryHome.accessories.count) accessories"
+            listOfAccessoriesButton?.enabled = homeManager.primaryHome.accessories.count > 0
         } else {
-            mainHomeName.text = "n/a"
+            mainHomeName?.text = "n/a"
             self.presentPrimaryHomePromp()
         }
     }

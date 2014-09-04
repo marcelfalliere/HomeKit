@@ -67,7 +67,7 @@ extension DiscoverAccessoriesViewController {
     
     func accessoryBrowser(browser: HMAccessoryBrowser!, didFindNewAccessory accessory: HMAccessory!) {
         if !localAccessoriesContains(accessory) {
-            accessories += accessory
+            accessories.append(accessory);
             tableView.reloadData()
             NSLog("new accessory found")
         };
