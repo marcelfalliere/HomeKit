@@ -19,11 +19,13 @@ class AccessoriesViewController : UITableViewController, UITableViewDataSource, 
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "details" {
-            let dest :AccessoryDetailsViewController = segue.destinationViewController as AccessoryDetailsViewController!
-            dest.accessory = sender as? HMAccessory
-            dest.home = self.home
+            if let dest = segue.destinationViewController as? AccessoryDetailsViewController {
+                dest.accessory = sender as? HMAccessory
+                dest.home = self.home
+            }
+
         }
     }
 
@@ -34,7 +36,7 @@ class AccessoriesViewController : UITableViewController, UITableViewDataSource, 
 
 extension AccessoriesViewController {
     
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if let accessories = home?.accessories {
             return accessories.count
@@ -42,22 +44,22 @@ extension AccessoriesViewController {
         return 0
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
         if let accessories = home?.accessories {
             
             let accessory = accessories[indexPath.row] as HMAccessory
             
-            cell.textLabel.text = accessory.name
-            cell.detailTextLabel.text = "\(accessory.room.name)"
+            cell.textLabel?.text = accessory.name
+            cell.detailTextLabel?.text = "\(accessory.room.name)"
             
         }
         
         return cell
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier("details", sender: home?.accessories[indexPath.row])
     }
     

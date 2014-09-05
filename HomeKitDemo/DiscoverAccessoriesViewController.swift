@@ -28,7 +28,7 @@ class DiscoverAccessoriesViewController : UITableViewController, UITableViewData
         accessoryBrowser.stopSearchingForNewAccessories()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         /*if let dest = segue.destinationViewController as? AccessoryDetailsViewController {
             dest.accessory = sender as HMAccessory
         }*/
@@ -85,34 +85,30 @@ extension DiscoverAccessoriesViewController {
 
 extension DiscoverAccessoriesViewController {
     
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return accessories.count;
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
-    {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = accessories[indexPath.row].name
+        cell.textLabel?.text = accessories[indexPath.row].name
         
         return cell
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        //performSegueWithIdentifier("details", sender: accessories[indexPath.row])
-        
-        
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         homeManager.primaryHome.addAccessory(accessories[indexPath.row] as HMAccessory, completionHandler: ({(error:NSError!) in
-            if error {
+            if ( error != nil) {
                 var popup = UIAlertView(title:"Error", message:"Error when adding accessory to primary home (error is : \(error)", delegate: nil, cancelButtonTitle:"Ok :(")
                 popup.show()
                 
                 NSLog("error: \(error)")
             } else {
-
+                
                 var popup = UIAlertView(title:"Success!", message:"Accessory added with success ! Now go to your home and assign it a room", delegate: nil, cancelButtonTitle:"Ok !!!")
                 popup.show()
-
+                
             }
         }))
     }

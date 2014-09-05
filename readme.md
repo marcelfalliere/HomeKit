@@ -3,7 +3,7 @@ HomeKit
 
 Feature list :
  
-  - **New:** works with Xcode6 alright
+  - **New:** works with Xcode6 Beta7
   - discover devices and add them to your primary home
   - manage your primary home
   - add a room to your primary home

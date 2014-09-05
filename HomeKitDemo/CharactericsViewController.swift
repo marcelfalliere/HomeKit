@@ -27,7 +27,7 @@ class CharacteristicsViewController : UITableViewController, UITableViewDelegate
 }
 
 extension CharacteristicsViewController {
-    override func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if let characteristics = service?.characteristics {
             NSLog("rows : \(characteristics.count)")
@@ -36,7 +36,7 @@ extension CharacteristicsViewController {
         return 0
     }
     
-    override func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let ch :HMCharacteristic = self.service?.characteristics[indexPath.row] as HMCharacteristic
         
@@ -87,13 +87,13 @@ extension CharacteristicsViewController {
         }
     }
     
-    override func tableView(tableView: UITableView!, heightForRowAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60;
     }
     
     func cellButtonTapped(sender :AnyObject!) {
         let buttonPosition :CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
-        let indexPath :NSIndexPath = self.tableView.indexPathForRowAtPoint(buttonPosition)
+        let indexPath :NSIndexPath = self.tableView.indexPathForRowAtPoint(buttonPosition)!
         let ch :HMCharacteristic = self.service?.characteristics[indexPath.row] as HMCharacteristic
         
         if ch.characteristicType == HMCharacteristicTypePowerState {
@@ -107,7 +107,7 @@ extension CharacteristicsViewController {
     
     func slider100percentValueChanged(sender :AnyObject!) {
         let buttonPosition :CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
-        let indexPath :NSIndexPath = self.tableView.indexPathForRowAtPoint(buttonPosition)
+        let indexPath :NSIndexPath = self.tableView.indexPathForRowAtPoint(buttonPosition)!
         let ch :HMCharacteristic = self.service?.characteristics[indexPath.row] as HMCharacteristic
         
         let slider :UISlider = sender as UISlider

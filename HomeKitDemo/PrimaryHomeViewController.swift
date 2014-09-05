@@ -26,7 +26,7 @@ class PrimaryHomeViewController: UIViewController {
     
     func updateUi() {
         NSLog("primary home : \(homeManager.primaryHome) count:\(homeManager.homes.count)")
-        if (homeManager.primaryHome) {
+        if ((homeManager.primaryHome) != nil) {
             mainHomeName?.text = homeManager.primaryHome.name
             
             numberOfRooms?.text = "\(homeManager.primaryHome.rooms.count) rooms"
@@ -42,9 +42,9 @@ class PrimaryHomeViewController: UIViewController {
     
     func setOrUpdatePrimaryHomeName(name:String!) {
         NSLog("primary home : \(homeManager.primaryHome)")
-        if (homeManager.primaryHome) {
+        if ((homeManager.primaryHome) != nil) {
             homeManager.primaryHome.updateName(name, completionHandler:({(error:NSError!) in
-                if error {
+                if (error != nil) {
                     NSLog("error updating home: \(error)")
                 } else {
                     NSLog("no error, home name updated")
@@ -54,7 +54,7 @@ class PrimaryHomeViewController: UIViewController {
 
         } else {
             homeManager.addHomeWithName(name, completionHandler:({(home:HMHome!, error:NSError!) in
-                if error {
+                if (error != nil) {
                     NSLog("error creating home: \(error)")
                 } else {
                     
@@ -75,7 +75,7 @@ class PrimaryHomeViewController: UIViewController {
     
     func saveNewRoomToPrimaryHome(name:String!) {
         homeManager.primaryHome.addRoomWithName(name, completionHandler: ({(room:HMRoom!, error:NSError!) in
-            if error {
+            if (error != nil) {
                 NSLog("error creating room: \(error)")
             } else {
                 NSLog("no error, home created")
@@ -85,16 +85,18 @@ class PrimaryHomeViewController: UIViewController {
 
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "rooms" {
-            let dest :RoomsViewController = segue.destinationViewController as RoomsViewController!
-            dest.home = homeManager.primaryHome
-            dest.pickerMode = false
+            if let dest = segue.destinationViewController as? RoomsViewController {
+                dest.home = homeManager.primaryHome
+                dest.pickerMode = false
+            }
         }
         
         if segue.identifier == "accessories" {
-            let dest :AccessoriesViewController = segue.destinationViewController as AccessoriesViewController!
-            dest.home = homeManager.primaryHome
+            if let dest = segue.destinationViewController as? AccessoriesViewController {
+                dest.home = homeManager.primaryHome
+            }
         }
         
     }
@@ -102,13 +104,19 @@ class PrimaryHomeViewController: UIViewController {
     func presentPrimaryHomePromp() {
         var alert = UIAlertController(title: "Primary Home", message: "Pick a name for your primary home ! (Yes, with iOS8, having a home is as simple as picking a name >.<)", preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: ({(alertAction: UIAlertAction!) in
-            for textField in alert.textFields {
-                if let input = textField as? UITextField {
-                    if input.tag == 1 {
-                        self.setOrUpdatePrimaryHomeName(input.text)
+            
+            if let textFields:[AnyObject]! = alert.textFields as [AnyObject]! {
+                
+                for textField in textFields {
+                    if let input = textField as? UITextField {
+                        if input.tag == 1 {
+                            self.setOrUpdatePrimaryHomeName(input.text)
+                        }
                     }
                 }
+                
             }
+            
             
             }))
         alert.addAction(action)
@@ -128,13 +136,21 @@ class PrimaryHomeViewController: UIViewController {
     @IBAction func addRoom(sender : AnyObject) {
         var alert = UIAlertController(title: "Add a room", message: "Pick a name for yournew room.", preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: ({(alertAction: UIAlertAction!) in
-            for textField in alert.textFields {
-                if let input = textField as? UITextField {
-                    if input.tag == 1 {
-                        self.saveNewRoomToPrimaryHome(input.text)
+            
+            
+            if let textFields:[AnyObject]! = alert.textFields as [AnyObject]! {
+                
+                for textField in textFields {
+                    if let input = textField as? UITextField {
+                        if input.tag == 1 {
+                            self.saveNewRoomToPrimaryHome(input.text)
+
+                        }
                     }
                 }
+                
             }
+
             
             }))
         alert.addAction(action)

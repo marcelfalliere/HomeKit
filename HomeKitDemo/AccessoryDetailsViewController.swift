@@ -35,19 +35,24 @@ class AccessoryDetailsViewController : UIViewController, UITableViewDelegate, UI
     @IBAction func changeName(sender: AnyObject!) {
         var alert = UIAlertController(title: "Change name", message: "Input a new name for this accessory", preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: ({(alertAction: UIAlertAction!) in
-            for textField in alert.textFields {
-                if let input = textField as? UITextField {
-                    if input.tag == 1 {
-                        self.accessory?.updateName(input.text, completionHandler:({(error:NSError!) in
-                            if error {
-                                NSLog("error updating acccessory name. error:\(error)")
+            
+            if let textFields:[AnyObject]! = alert.textFields as [AnyObject]! {
+            
+                for textField in textFields {
+                    if let input = textField as? UITextField {
+                        if input.tag == 1 {
+                            self.accessory?.updateName(input.text, completionHandler:({(error:NSError!) in
+                                if (error != nil) {
+                                    NSLog("error updating acccessory name. error:\(error)")
                             } else {
-                                NSLog("name update !")
+                                    NSLog("name update !")
                                 self.render()
                             }
-                        }))
-                    }
+                            }))
+                        }
                 }
+            }
+                
             }
             
             }))
@@ -69,15 +74,19 @@ class AccessoryDetailsViewController : UIViewController, UITableViewDelegate, UI
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
         if segue.identifier == "characteristics" {
-            let dest :CharacteristicsViewController = segue.destinationViewController as CharacteristicsViewController!
-            dest.service = sender as? HMService
+            if let dest = segue.destinationViewController as? CharacteristicsViewController {
+                dest.service = sender as? HMService
+            }
+
         } else if segue.identifier == "pickRoom" {
-            let dest :RoomsViewController = segue.destinationViewController as RoomsViewController!
-            dest.home = self.home
-            dest.pickerMode = true
-            dest.accessoryViewController = self
+            if let dest = segue.destinationViewController as? RoomsViewController {
+                dest.home = self.home
+                dest.pickerMode = true
+                dest.accessoryViewController = self
+            }
+            
         }
     }
     
@@ -87,7 +96,7 @@ class AccessoryDetailsViewController : UIViewController, UITableViewDelegate, UI
         
         
         home?.assignAccessory(accessory, toRoom: room, completionHandler: ({(error:NSError!) in
-            if error {
+            if (error != nil) {
                 var popup = UIAlertView(title:"Error", message:"Error when assigning the accessory to the picked room (error is : \(error)", delegate: nil, cancelButtonTitle:"Ok :(")
                 popup.show()
             } else {
@@ -126,7 +135,7 @@ extension AccessoryDetailsViewController {
 
 extension AccessoryDetailsViewController {
     
-    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if let services = accessory?.services {
             return services.count
@@ -134,7 +143,7 @@ extension AccessoryDetailsViewController {
         return 0
     }
     
-    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell!
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("service-cell", forIndexPath: indexPath) as UITableViewCell
         
@@ -142,15 +151,15 @@ extension AccessoryDetailsViewController {
             
             let service = services[indexPath.row] as HMService
             
-            cell.textLabel.text = "\(service.name)"
-            cell.detailTextLabel.text = "\(service.characteristics.count) characteristics"
+            cell.textLabel?.text = "\(service.name)"
+            cell.detailTextLabel?.text = "\(service.characteristics.count) characteristics"
             
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         performSegueWithIdentifier("characteristics", sender: accessory?.services[indexPath.row])
         
     }
